@@ -2,7 +2,6 @@ package leetcode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,21 +10,34 @@ import java.util.stream.Collectors;
 public class LongestSubstringWithoutRepeatingCharacters {
   public int lengthOfLongestSubstring(String s) {
     // list of chars in input string.
-    Set<Character> chars = s.chars().mapToObj(item -> (char) item).collect(Collectors.toSet());
+    List<Character> charList = s.chars().mapToObj(item -> (char) item).collect(Collectors.toList());
+    List<Character> maxLengthWord = new ArrayList<>();
 
-    Set<String> words = new HashSet<>();
-    words.add(s);
-    System.out.println(chars);
-
-    for (Character separator : chars) {
-      words = split(words, separator);
-      System.out.println(words);
+    for (int i = 0; i < charList.size(); i++) {
+      List<Character> subList = charList.subList(i, charList.size());
+      List<Character> foundList = findLongestWord(subList);
+      if (foundList.size() > maxLengthWord.size()) {
+        maxLengthWord = foundList;
+      }
     }
 
-    if (words.size() == 0) {
-      return 0;
+    return maxLengthWord.size();
+  }
+
+  public List<Character> findLongestWord(List<Character> input) {
+    List<Character> maxLengthWord = new ArrayList<>();
+    List<Character> output = new ArrayList<>();
+    for (Character chr : input) {
+      if (output.contains(chr)) {
+        if (output.size() >= maxLengthWord.size()) {
+          maxLengthWord = output;
+        }
+        output = new ArrayList<>();
+        continue;
+      }
+      output.add(chr);
     }
-    return words.stream().max(Comparator.comparingInt(String::length)).get().length();
+    return maxLengthWord.size() == 0 ? output : maxLengthWord;
   }
 
   public Set<String> split(Set<String> input, Character separator) {
