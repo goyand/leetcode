@@ -8,69 +8,82 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class LongestSubstringWithoutRepeatingCharacters {
+
+  private static final List<String> PATTERNS = new ArrayList<>(
+      Arrays.asList("(", ")", "*", "+", "?", "[", "]", "\\", "{", "}"));
+
   public int lengthOfLongestSubstring(String s) {
-    // list of chars in input string.
+    // 1. 文字列の途中で、2つのcharに挟まれており、重複する文字列がない
+    // 2. 文頭からcharの重複を許さずに取得できる最長文字列
+    // 3. 文末からcharの重複を許さずに取得できる最長文字列
+
+    // change string to char list.
+    Set<Character> chars = s.chars().mapToObj(item -> (char) item).collect(Collectors.toSet());
+
+    int maxLength = 0;
+
+    // 1.
+    for (Character c : chars) {
+      String letter = Character.toString(c);
+      if (PATTERNS.contains(letter)) {
+        letter = "\\" + Character.toString(c);
+      }
+
+      maxLength = Math.max(maxLength, longestUniqueWordCountBetweenChars(letter, s));
+    }
+
     List<Character> charList = s.chars().mapToObj(item -> (char) item).collect(Collectors.toList());
-    List<Character> maxLengthWord = new ArrayList<>();
+    // 2.
+    maxLength = Math.max(maxLength, longestFromLeft(charList));
+    // 3.
+    maxLength = Math.max(maxLength, longestFromRight(charList));
 
-    for (int i = 0; i < charList.size(); i++) {
-      List<Character> subList = charList.subList(i, charList.size());
-      List<Character> foundList = findLongestWord(subList);
-      if (foundList.size() > maxLengthWord.size()) {
-        maxLengthWord = foundList;
-      }
-    }
-
-    return maxLengthWord.size();
+    return maxLength;
   }
 
-  public List<Character> findLongestWord(List<Character> input) {
-    List<Character> maxLengthWord = new ArrayList<>();
-    List<Character> output = new ArrayList<>();
-    for (Character chr : input) {
-      if (output.contains(chr)) {
-        if (output.size() >= maxLengthWord.size()) {
-          maxLengthWord = output;
-        }
-        output = new ArrayList<>();
-        continue;
+  public int longestFromLeft(List<Character> characters) {
+    Set<Character> charSet = new HashSet<>();
+    for (int i = 0; i < characters.size(); i++) {
+      if (charSet.contains(characters.get(i))) {
+        break;
       }
-      output.add(chr);
+      charSet.add(characters.get(i));
     }
-    return maxLengthWord.size() == 0 ? output : maxLengthWord;
+    return charSet.size();
   }
 
-  public Set<String> split(Set<String> input, Character separator) {
-    Set<String> result = new HashSet<>();
-    List<String> splitStr = null;
-    for (String word : input) {
-      System.out.println(result);
-      if (!hasMoreThanOneChar(word, separator)) {
-        result.add(word);
-        continue;
+  public int longestFromRight(List<Character> characters) {
+    Set<Character> charSet = new HashSet<>();
+    for (int i = characters.size() - 1; i >= 0; i--) {
+      if (charSet.contains(characters.get(i))) {
+        break;
       }
-      splitStr = new ArrayList<>(Arrays.asList(word.split(Character.toString(separator))));
-      if (splitStr.size() == 0) {
-        result.add(Character.toString(separator));
-        continue;
-      }
-
-      result.addAll(splitStr.stream()
-          .map(chunk -> chunk + Character.toString(separator)).collect(Collectors.toSet()));
+      charSet.add(characters.get(i));
     }
-    return result;
+    return charSet.size();
   }
 
-  public boolean hasMoreThanOneChar(String str, Character ch) {
-    int count = 0;
-    for (int i = 0; i < str.length(); i++) {
-      if (str.charAt(i) == ch) {
-        count++;
-      }
-      if (count > 1) {
-        return true;
-      }
+  public int longestUniqueWordCountBetweenChars(String letter, String str) {
+    List<String> splitWords = Arrays.asList(str.split(letter));
+    if (splitWords.size() == 0) {
+      return 1;
     }
-    return false;
+
+    int maxLength = 1;
+    for (int i = 0; i < splitWords.size(); i++) {
+      List<Character> wordChars = splitWords.get(i).chars().mapToObj(item -> (char) item).collect(Collectors.toList());
+      if (i != 0) {
+        maxLength = Math.max(maxLength, longestFromLeft(wordChars) + 1);
+      }
+      if (i != splitWords.size() - 1) {
+        maxLength = Math.max(maxLength, longestFromRight(wordChars) + 1);
+      }
+      if (wordChars.size() != wordChars.stream().distinct().count()) {
+        // 重複チェック
+        continue;
+      }
+      maxLength = Math.max(maxLength, wordChars.size() + 1);
+    }
+    return maxLength;
   }
 }
