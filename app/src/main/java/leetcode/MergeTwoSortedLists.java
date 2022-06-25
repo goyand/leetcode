@@ -3,35 +3,36 @@
  */
 package leetcode;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-
 public class MergeTwoSortedLists {
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-        Deque<Integer> deque = new ArrayDeque<>();
+        ListNode head = new ListNode(-1);
+        ListNode tail = head;
+
         while (list1 != null || list2 != null) {
-            if (list2 == null) {
-                deque.push(list1.val);
-                list1 = list1.next;
-                continue;
+
+            if (list1 != null && list2 != null) {
+                if (list1.val <= list2.val) {
+                    tail.next = list1;
+                    list1 = list1.next;
+                } else {
+                    tail.next = list2;
+                    list2 = list2.next;
+                }
+                tail = tail.next;
             }
-            if (list1 == null) {
-                deque.push(list2.val);
-                list2 = list2.next;
-                continue;
-            }
-            if (list1.val <= list2.val) {
-                deque.push(list1.val);
+
+            else if (list1 != null) {
+                tail.next = list1;
                 list1 = list1.next;
+                tail = tail.next;
             } else {
-                deque.push(list2.val);
+                tail.next = list2;
                 list2 = list2.next;
+                tail = tail.next;
             }
         }
-        ListNode node = null;
-        while (!deque.isEmpty()) {
-            node = new ListNode(deque.poll(), node);
-        }
-        return node;
+
+        tail.next = null;
+        return head.next;
     }
 }
