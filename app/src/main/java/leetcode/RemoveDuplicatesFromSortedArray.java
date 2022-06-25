@@ -5,16 +5,14 @@ package leetcode;
 
 public class RemoveDuplicatesFromSortedArray {
     public int removeDuplicates(int[] nums) {
-        int counter = 1;
-        int current = nums[0];
+        int index = 0;
         for (int i = 1; i < nums.length; i++) {
-            if (current == nums[i]) {
+            if (nums[index] == nums[i]) {
                 continue;
             }
-            counter++;
-            current = nums[i];
-            nums[counter - 1] = current;
+            index++;
+            nums[index] = nums[i];
         }
-        return counter;
+        return index + 1;
     }
 }
