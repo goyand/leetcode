@@ -3,33 +3,27 @@
  */
 package leetcode;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class ValidParentheses {
     public boolean isValid(String s) {
-        String stack = "";
+        Deque<Character> deque = new ArrayDeque<>();
         if (s.length() % 2 == 1) {
             return false;
         }
-        for (int i = 0; i < s.length(); i++) {
-            char character = s.charAt(i);
-            switch (character) {
-                case '(':
-                    stack += ")";
-                    break;
-                case '{':
-                    stack += "}";
-                    break;
-                case '[':
-                    stack += "]";
-                    break;
-                case ')':
-                case '}':
-                case ']':
-                    if (stack.length() == 0 || character != stack.charAt(stack.length() - 1)) {
+        for (char ch : s.toCharArray()) {
+            switch (ch) {
+                case '(' -> deque.push(')');
+                case '{' -> deque.push('}');
+                case '[' -> deque.push(']');
+                default -> {
+                    if (deque.isEmpty() || ch != deque.poll()) {
                         return false;
                     }
-                    stack = stack.substring(0, stack.length() - 1);
+                }
             }
         }
-        return stack.equals("");
+        return deque.isEmpty();
     }
 }
