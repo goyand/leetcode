@@ -4,21 +4,22 @@
 package leetcode;
 
 public class MaxSubArray {
+    int max;
+
     public int maxSubArray(int[] nums) {
-        int max = -10000;
-        for (int i = 0; i < nums.length; i++) {
-            max = Math.max(max, findMax(nums, i));
-        }
-        return max;
+        this.max = nums[0];
+        findMax(nums, nums.length - 1);
+        return this.max;
     }
 
-    public int findMax(int[] nums, int begining) {
-        int max = -10000;
-        int current = 0;
-        for (int i = begining; i < nums.length; i++) {
-            current += nums[i];
-            max = Math.max(max, current);
+    public int findMax(int[] nums, int k) {
+        if (k == 0) {
+            return nums[0];
         }
-        return max;
+
+        int curMax = findMax(nums, k - 1) + nums[k];
+        int ans = Math.max(curMax, nums[k]);
+        this.max = Math.max(this.max, ans);
+        return ans;
     }
 }

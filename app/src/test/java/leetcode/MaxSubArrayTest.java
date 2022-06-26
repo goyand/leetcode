@@ -63,14 +63,14 @@ class MaxSubArrayTest {
         assertEquals(-1, actual);
     }
 
-    @Test
-    void findMaxFromFirstTest1() {
-        // setup
-        MaxSubArray sol = new MaxSubArray();
-        int[] input = { -2, 1, -3, 4, -1, 2, 1, -5 };
-        // execute
-        int actual = sol.findMax(input, 0);
-        // verify
-        assertEquals(2, actual);
-    }
+    // @Test
+    // void findMaxFromFirstTest1() {
+    // // setup
+    // MaxSubArray sol = new MaxSubArray();
+    // int[] input = { -2, 1, -3, 4, -1, 2, 1, -5 };
+    // // execute
+    // int actual = sol.findMax(input, 0);
+    // // verify
+    // assertEquals(2, actual);
+    // }
 }
