@@ -5,16 +5,16 @@ package leetcode;
 
 public class ClimbingStairs {
     public int climbStairs(int n) {
-        return step(n);
-    }
-
-    private int step(int n) {
         if (n == 1) {
             return 1;
         }
-        if (n == 2) {
-            return 2;
+        int x = 1, y = 1, tmp = 0, i = 1;
+        while (i < n) {
+            tmp = x;
+            x = y;
+            y = x + tmp;
+            i++;
         }
-        return step(n - 1) + step(n - 2);
+        return y;
     }
 }
