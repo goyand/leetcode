@@ -25,31 +25,40 @@ public class TreeNode {
         + (this.right != null ? ", right={ " + this.right.toString() + " }" : "");
   }
 
-  // @Override
-  // public boolean equals(Object obj) {
-  // if (obj == this)
-  // return true;
-  // if (obj instanceof TreeNode) {
-  // TreeNode treeNode = (TreeNode) obj;
-  // if (this.val == treeNode.val) {
-  // if (this.left != null && treeNode.left == null) {
-  // return true;
-  // }
-  // if (this.next != null && treeNode.next != null &&
-  // this.next.equals(treeNode.next)) {
-  // return true;
-  // }
-  // }
-  // return false;
-  // }
-  // return false;
-  // }
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == this)
+      return true;
+    if (obj instanceof TreeNode) {
+      TreeNode treeNode = (TreeNode) obj;
+      if (this.val == treeNode.val) {
+        if (this.left == null && treeNode.left == null) {
+          if (this.right == null && treeNode.right == null) {
+            return true;
+          }
+          if (this.right != null && treeNode.right != null && this.right.equals(treeNode.right)) {
+            return true;
+          }
+        } else if (this.right == null && treeNode.right == null) {
+          if (this.left == null && treeNode.left == null) {
+            return true;
+          }
+          if (this.left != null && treeNode.left != null && this.left.equals(treeNode.left)) {
+            return true;
+          }
+        } else if (this.left != null && treeNode.left != null && this.right != null && treeNode.right != null) {
+          return this.left.equals(treeNode.left) && this.right.equals(treeNode.right);
+        }
+      }
+    }
+    return false;
+  }
 
-  // @Override
-  // public int hashCode() {
-  // int result = 17;
-  // result = 31 * result + val;
-  // result = 31 * result + (next != null ? next.hashCode() : 0);
-  // return result;
-  // }
+  @Override
+  public int hashCode() {
+    int result = 17;
+    result = 31 * result + val;
+    result = 31 * result + (left != null ? left.hashCode() : 0) + (right != null ? right.hashCode() : 0);
+    return result;
+  }
 }
