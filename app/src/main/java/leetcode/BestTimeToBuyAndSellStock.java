@@ -5,11 +5,11 @@ package leetcode;
 
 public class BestTimeToBuyAndSellStock {
   public int maxProfit(int[] prices) {
-    int result = 0;
-    for (int i = 0; i < prices.length; i++) {
-      for (int j = i + 1; j < prices.length; j++) {
-        result = Math.max(result, prices[j] - prices[i]);
-      }
+    int result = Integer.MIN_VALUE;
+    int curMin = Integer.MAX_VALUE;
+    for (int val : prices) {
+      curMin = Math.min(curMin, val);
+      result = Math.max(result, val - curMin);
     }
     return result;
   }
