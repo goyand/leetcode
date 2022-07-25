@@ -5,23 +5,34 @@ package leetcode;
 
 public class IntersectionOfTwoLinkedLists {
   public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-    while (headA != null) {
-      ListNode found = find(headA, headB);
-      if (found != null) {
-        return found;
-      }
-      headA = headA.next;
-    }
-    return null;
-  }
+    ListNode h1 = headA;
+    ListNode h2 = headB;
+    int h1len = 0;
+    int h2len = 0;
 
-  private ListNode find(final ListNode root, ListNode head) {
-    if (root == null || head == null) {
-      return null;
+    while (h1 != null) {
+      h1len++;
+      h1 = h1.next;
     }
-    if (root == head) {
-      return root;
+    while (h2 != null) {
+      h2len++;
+      h2 = h2.next;
     }
-    return find(root, head.next);
+
+    while (h1len != h2len) {
+      if (h1len > h2len) {
+        headA = headA.next;
+        h1len--;
+      } else {
+        headB = headB.next;
+        h2len--;
+      }
+    }
+
+    while (headA != headB) {
+      headA = headA.next;
+      headB = headB.next;
+    }
+    return headA;
   }
 }
