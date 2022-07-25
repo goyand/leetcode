@@ -3,19 +3,12 @@
  */
 package leetcode;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class SingleNumber {
   public int singleNumber(int[] nums) {
-    Set<Integer> appeared = new HashSet<>();
-    for (int num : nums) {
-      if (appeared.contains(num)) {
-        appeared.remove(num);
-      } else {
-        appeared.add(num);
-      }
+    int res = nums[0];
+    for (int i = 1; i < nums.length; ++i) {
+      res ^= nums[i];
     }
-    return appeared.iterator().next();
+    return res;
   }
 }
