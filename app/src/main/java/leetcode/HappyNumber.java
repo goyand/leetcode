@@ -3,31 +3,24 @@
  */
 package leetcode;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class HappyNumber {
-  public boolean isHappy(int n) {
-    Set<Integer> hist = new HashSet<>();
-    while (true) {
-      if (n == 1) {
-        return true;
-      }
-      if (hist.contains(n)) {
-        return false;
-      }
-      hist.add(n);
-      n = calcHappyNumber(n);
+  public int getNext(int n) {
+    int totalSum = 0;
+    while (n > 0) {
+      int d = n % 10;
+      n = n / 10;
+      totalSum += d * d;
     }
+    return totalSum;
   }
 
-  private int calcHappyNumber(int n) {
-    int result = 0;
-    int current = n;
-    while (current > 0) {
-      result += (int) Math.pow(current % 10, 2);
-      current = current / 10;
+  public boolean isHappy(int n) {
+    int slowRunner = n;
+    int fastRunner = getNext(n);
+    while (fastRunner != 1 && slowRunner != fastRunner) {
+      slowRunner = getNext(slowRunner);
+      fastRunner = getNext(getNext(fastRunner));
     }
-    return result;
+    return fastRunner == 1;
   }
 }
