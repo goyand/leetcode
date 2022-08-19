@@ -9,17 +9,16 @@ import java.util.Map;
 public class IsomorphicStrings {
   public boolean isIsomorphic(String s, String t) {
     Map<Character, Character> dict1 = new HashMap<>();
-    Map<Character, Character> dict2 = new HashMap<>();
 
     for (int i = 0; i < s.length(); i++) {
+
       if (dict1.containsKey(s.charAt(i)) && !dict1.get(s.charAt(i)).equals(t.charAt(i))) {
         return false;
-      } else if (dict2.containsKey(t.charAt(i)) && !dict2.get(t.charAt(i)).equals(s.charAt(i))) {
-        return false;
-      } else {
-        dict1.put(s.charAt(i), t.charAt(i));
-        dict2.put(t.charAt(i), s.charAt(i));
       }
+      if (!dict1.containsKey(s.charAt(i)) && dict1.containsValue(t.charAt(i))) {
+        return false;
+      }
+      dict1.put(s.charAt(i), t.charAt(i));
     }
     return true;
   }
