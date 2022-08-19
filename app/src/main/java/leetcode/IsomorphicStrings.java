@@ -11,14 +11,11 @@ public class IsomorphicStrings {
     int[] tCharIndexArray = new int[256];
 
     for (int i = 0; i < sChar.length; i++) {
-      if (sCharIndexArray[sChar[i]] != 0 && sCharIndexArray[sChar[i]] != tChar[i]) {
+      if (sCharIndexArray[sChar[i]] != tCharIndexArray[tChar[i]]) {
         return false;
       }
-      if (tCharIndexArray[tChar[i]] != 0 && tCharIndexArray[tChar[i]] != sChar[i]) {
-        return false;
-      }
-      sCharIndexArray[sChar[i]] = tChar[i];
-      tCharIndexArray[tChar[i]] = sChar[i];
+      sCharIndexArray[sChar[i]] = i + 1;
+      tCharIndexArray[tChar[i]] = i + 1;
     }
     return true;
   }
