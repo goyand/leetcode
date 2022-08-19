@@ -3,22 +3,22 @@
  */
 package leetcode;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class IsomorphicStrings {
   public boolean isIsomorphic(String s, String t) {
-    Map<Character, Character> dict1 = new HashMap<>();
+    char[] sChar = s.toCharArray();
+    char[] tChar = t.toCharArray();
+    int[] sCharIndexArray = new int[256];
+    int[] tCharIndexArray = new int[256];
 
-    for (int i = 0; i < s.length(); i++) {
-
-      if (dict1.containsKey(s.charAt(i)) && !dict1.get(s.charAt(i)).equals(t.charAt(i))) {
+    for (int i = 0; i < sChar.length; i++) {
+      if (sCharIndexArray[sChar[i]] != 0 && sCharIndexArray[sChar[i]] != tChar[i]) {
         return false;
       }
-      if (!dict1.containsKey(s.charAt(i)) && dict1.containsValue(t.charAt(i))) {
+      if (tCharIndexArray[tChar[i]] != 0 && tCharIndexArray[tChar[i]] != sChar[i]) {
         return false;
       }
-      dict1.put(s.charAt(i), t.charAt(i));
+      sCharIndexArray[sChar[i]] = tChar[i];
+      tCharIndexArray[tChar[i]] = sChar[i];
     }
     return true;
   }
