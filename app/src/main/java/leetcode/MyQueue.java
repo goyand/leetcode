@@ -9,19 +9,19 @@ import java.util.Deque;
 class MyQueue {
 
   private Deque<Integer> stack = new ArrayDeque<>();
+  private Deque<Integer> tmpStack = new ArrayDeque<>();
 
   public MyQueue() {
 
   }
 
   public void push(int x) {
-    Deque<Integer> newStack = new ArrayDeque<>();
     while (!stack.isEmpty()) {
-      newStack.push(stack.pop());
+      tmpStack.push(stack.pop());
     }
     stack.push(x);
-    while (!newStack.isEmpty()) {
-      stack.push(newStack.pop());
+    while (!tmpStack.isEmpty()) {
+      stack.push(tmpStack.pop());
     }
   }
 
